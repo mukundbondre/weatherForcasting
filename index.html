@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wather forcasting</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city name">
+            <button onclick="run();"><img src="images/search.png"></button>
+        </div>
+        <div class="weather">
+            <img class="weather-icon">
+            <h1 class="temp"></h1>
+            <h2 class="city"></h2>
+        </div>
+    </div>
+</body>
+<script>
+    const apiKey = "47075f00cb36b7f00c281d49bef5527c";
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric";
+
+    async function checkWeather(city){
+        const response = await fetch(apiUrl + `&q=${city}&appid=${apiKey}`);
+        var data = await response.json();
+
+        console.log(data);
+
+        const icon = document.querySelector(".weather-icon");
+
+            if(data.weather[0].main=="Clouds"){
+                icon.src="images/clouds.png";
+            }
+            else if(data.weather[0].main=="Clear"){
+                icon.src="images/clear.png";
+            }
+            else if(data.weather[0].main=="Drizzle"){
+                icon.src="images/drizzle.png";
+            }
+            else if(data.weather[0].main=="Rain"){
+                icon.src="images/rain.png";
+            }
+            else if(data.weather[0].main=="Mist"){
+                icon.src="images/mist.png";
+            }
+            else if(data.weather[0].main=="Snow"){
+                icon.src="images/snow.png";
+            }
+            else{
+                icon.src="images/humidity.png";
+            }
+
+        document.querySelector(".temp").innerHTML=Math.round(data.main.temp) + "°c";
+
+        document.querySelector(".city").innerHTML=data.name;
+
+        
+    }
+    function run(){
+            var city = document.querySelector(".search input").value;
+            checkWeather(city);
+        }
+</script>
+</html>
